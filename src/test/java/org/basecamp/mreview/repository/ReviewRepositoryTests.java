@@ -10,6 +10,7 @@ import org.basecamp.mreview.entity.Movie;
 import org.basecamp.mreview.entity.Review;
 import org.basecamp.mreview.entity.Member;
 
+import java.util.List;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -18,7 +19,7 @@ public class ReviewRepositoryTests {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    @Test
+
     public void insertMovieReviews(){
 
         IntStream.rangeClosed(1, 200).forEach(i -> {
@@ -35,6 +36,24 @@ public class ReviewRepositoryTests {
                     .build();
 
             reviewRepository.save(movieReview);
+        });
+    }
+    
+    @Test
+    public void testGetMovieReviews(){
+
+        Movie movie = Movie.builder().mno(3L).build();
+
+        List<Review> result = reviewRepository.findByMovie(movie);
+
+        result.forEach(movieReview -> {
+
+            System.out.print(movieReview.getReviewnum());
+            System.out.print("\t" + movieReview.getGrade());
+            System.out.print("\t" + movieReview.getText());
+            System.out.print("\t" + movieReview.getMember().getEmail());
+            System.out.println("---------------------------");
+
         });
     }
 }
